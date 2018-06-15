@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- 配置表与实体对象的关系 -->
+<hibernate-mapping package="com.wq.entity">
+	<class name="Customer" table="Cus_customer">
+		<id name="custId" column="custId">
+			<!-- generator:主键生成策略 -->
+			<generator class="increment"></generator>
+		</id>
+		<property name="custName" column="custName"></property>
+		<property name="custSource" column="custSource">
+		</property>
+		<property name="custIndustry" column="custIndustry">
+		</property>
+		<property name="custLevel" column="custLevel">
+		</property>
+		<property name="custLinkman" column="custLinkman">
+		</property>
+		<property name="custPhone" column="custPhone">
+		</property>
+		<property name="custMoblie" column="custMoblie">
+		</property>
+
+	</class>
+</hibernate-mapping>

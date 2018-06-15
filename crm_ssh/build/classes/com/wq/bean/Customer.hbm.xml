@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+	<!-- 配置表与实体对象的关系 -->
+	<!-- package属性 填写一个包，在元数据内部凡是需要书写完整类名的属性，可以直接写简单了类名 -->
+	 <hibernate-mapping package="com.wq.bean" >
+	 <!--class元素：配置实体与表的对应关系 
+	     name：完整的类名
+	 	 table元素：填写数据表名
+	  -->
+	 <class name="Customer" table="cst_customer">
+	 <!-- id:配置主键映射的属性 
+	 	  name:填写主键对应属性名
+	 	  column(可选)：填写表中的主键列名，列名会默认使用属性名
+	 	  type(可选)填写列(属性)的类型，Hibernate会自动检测实体的属性类型
+	 	  每个类型有三种写法：java类型|                  Hibernate|   数据库类型
+	 	              java.long.String           String       varchar 
+	  < column="cust_name" sql-type="varchar">
+	  int 是不是9位  长度是2的32次方减1 有一个符号位  65535
+	  not-null():配置该属性(列)是否为空，默认值为false
+	   <property name="cust_name" column="cust_name" not-null="true"></property>
+	 length(可选)配置数据库中列的长度：默认值：会使用数据库中类型最大的一个长度
+	 -->
+	
+	 <id name="cust_id"  >
+	 	<!-- generator:主键生成策略 -->
+	 <generator  class="native"></generator>
+	 </id>
+	 <!-- 
+	 property
+	 
+	   name元素:填写实体类的属性一一对应起来
+	    column(可选)：填写表中的主键列名，列名会默认使用属性名
+	    
+	    
+	     name:填写主键对应属性名
+	 	  column(可选)：填写表中的列名，列名会默认使用属性名
+	 	  type(可选)填写列(属性)的类型，Hibernate会自动检测实体的属性类型
+	 	  每个类型有三种写法：java类型|                  Hibernate|   数据库类型
+	 	              java.long.String           String       varchar 
+	  < column="cust_name" sql-type="varchar">
+	  int 是不是9位  长度是2的32次方减1 有一个符号位  65535
+	  not-null():配置该属性(列)是否为空，默认值为false
+	   <property name="cust_name" column="cust_name" not-null="true"></property>
+	 length(可选)配置数据库中列的长度：默认值：会使用数据库中类型最大的一个长度
+	   
+	 
+	  -->
+     <property name="cust_name" column="cust_name"></property>
+	 <property name="cust_linkman" column="cust_linkman"> </property>
+	 <property name="cust_phone" column="cust_phone"> </property>
+	 <property name="cust_moblie" column="cust_moblie"> </property> 
+	 
+	 
+     <many-to-one name="cust_source" column="cust_source" class="BaseDict"></many-to-one>
+     <many-to-one name="cust_industry" column="cust_industry" class="BaseDict"></many-to-one>
+     <many-to-one name="cust_level" column="cust_level" class="BaseDict"></many-to-one>
+	 </class>
+	 </hibernate-mapping>
+	

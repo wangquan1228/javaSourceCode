@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+
+
+
+
+	<!-- c3p0连接池配置 -->
+	<!-- 加载properties文件 -->
+	<context:property-placeholder
+		location="classpath:db.properties" />
+	<bean name="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"></property>
+		<property name="driverClass" value="${jdbc.driverClass}"></property>
+		<property name="user" value="${jdbc.jdbcUser}"></property>
+		<property name="password" value="${jdbc.jdbcPassword}"></property>
+	</bean>
+
+	<!-- 将SessionFactory配置到spring中 -->
+	<!-- 方法1:将外部的hibernate.cfg.xml文件引入,该方法配置量较大不推荐使用 <bean name="sessionFactory" 
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"> <property 
+		name="configLocation" value="classpath:hibernate.cfg.xml"></property> </bean> -->
+	<!-- 方法2: 在spring中配置hibernate -->
+	<bean name="sessionFactory"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<!-- 将连接池注入到sessionFactory中,hibernate会通过连接池获得连接 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<!-- prperties类型注入 -->
+		<property name="hibernateProperties">
+			<props>
+				<!-- 必填项 -->
+				<!-- <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop> 
+					<prop key="hibernate.connection.password">wq951228</prop> <prop key="hibernate.connection.url">jdbc:mysql:///crm</prop> 
+					<prop key="hibernate.connection.username">root</prop> <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop> -->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+
+				<!-- 可选项 -->
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.format_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+				<prop key=""></prop>
+			</props>
+		</property>
+		<!-- 引入orm元数据,指定orm元数据所在的包路径，spring会自动读取包中的所有配置 -->
+		<property name="mappingDirectoryLocations"
+			value="classpath:com/wq/bean"></property>
+	</bean>
+
+
+	<!-- spring核心事务管理器 -->
+	<bean name="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!-- 配置通知 -->
+	<tx:advice id="txAdvice"
+		transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="persist*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="update*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="modify*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="delete*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="remove*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+			<tx:method name="get*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="true" />
+			<tx:method name="find*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="true" />
+			<tx:method name="transfer*" isolation="REPEATABLE_READ"
+				propagation="REQUIRED" read-only="false" />
+		</tx:attributes>
+	</tx:advice>
+	<!-- 配置将被织入的对象 -->
+	<aop:config>
+		<!-- 配置切点 -->
+		<aop:pointcut
+			expression="execution(* com.wq.service.impl.*ServiceImpl.*(..))"
+			id="txPc" />
+		<!-- 配置切面 -->
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPc" />
+	</aop:config>
+
+	<!-- ============================aop开发和注解开发二选一====================================== -->
+	<!-- 注解开发 -->
+	<!-- 开启事物 -->
+	<!-- <tx:annotation-driven transaction-manager="transactionManager" /> -->
+
+
+
+
+
+
+	<!-- dao层 -->
+	<bean name="userDao" class="com.wq.dao.impl.UserDaoImpl">
+		<!-- 注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean name="customerDao" class="com.wq.dao.impl.CustomerDaoImpl">
+		<!-- 注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean name="baseDictDao" class="com.wq.dao.impl.BaseDictDaoImpl">
+		<!-- 注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean name="linkManDao" class="com.wq.dao.impl.LinkManDaoImpl">
+		<!-- 注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<!--service层 -->
+	<bean name="userService"
+		class="com.wq.service.impl.UserServiceImpl">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+
+	<bean name="customerService"
+		class="com.wq.service.impl.CustomerServiceImpl">
+		<property name="customerDao" ref="customerDao"></property>
+	</bean>
+
+	<bean name="baseDictService"
+		class="com.wq.service.impl.BaseDictServiceImpl">
+		<property name="baseDictDao" ref="baseDictDao"></property>
+	</bean>
+
+
+	<bean name="linkManService"
+		class="com.wq.service.impl.LinkManServiceImpl">
+        <property name="linkManDao" ref="linkManDao"></property>
+	</bean>
+	<!-- action层 -->
+	<bean name="userAction" class="com.wq.action.UserAction"
+		scope="prototype">
+		<property name="userService" ref="userService"></property>
+	</bean>
+
+	<bean name="customerAction" class="com.wq.action.CustomerAction"
+		scope="prototype">
+		<property name="customerService" ref="customerService"></property>
+		<property name="linkManService" ref="linkManService"></property>
+	</bean>
+
+	<bean name="baseDictAction" class="com.wq.action.BaseDictAction"
+		scope="prototype">
+		<property name="baseDictService" ref="baseDictService"></property>
+	</bean>
+	
+	<bean name="linkManAction" class="com.wq.action.LinkManAction">
+	       <property name="linkManService" ref="linkManService"></property>
+	</bean>
+
+</beans>

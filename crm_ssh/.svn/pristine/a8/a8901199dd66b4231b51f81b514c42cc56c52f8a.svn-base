@@ -1,0 +1,8 @@
+package com.wq.dao.impl;
+
+import com.wq.bean.LinkMan;
+import com.wq.dao.LinkManDao;
+
+public class LinkManDaoImpl extends BaseDaoImpl<LinkMan> implements LinkManDao{
+
+}

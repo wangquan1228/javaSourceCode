@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+                                         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+ <session-factory >
+ <!-- mysql链接驱动 -->
+ <!--  <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+      数据库密码
+  <property name="hibernate.connection.password">wq951228</property>
+      数据库
+  <property name="hibernate.connection.url">jdbc:mysql:///crm</property>
+      用户名
+  <property name="hibernate.connection.username">root</property>
+    数据库方言
+  <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+     显示sql语句
+  <property name="hibernate.show_sql">true</property>
+  SQL语句格式化
+  <property name="hibernate.format_sql">true</property>
+  hibernate自动生成sql语句
+  <property name="hibernate.hbm2ddl.auto">update</property> -->
+  
+  
+  <!-- session与当前事物进行绑定 但是此时事务交个spring管理,在这儿在写的话与spring冲突了-->
+  <!--<property name="hibernate.current_session_context_class">thread</property>-->
+  <mapping resource="com/wq/bean/Customer.hbm.xml"/>
+  <mapping resource="com/wq/bean/User.hbm.xml"/>
+  <mapping resource="com/wq/bean/LinkMan.hbm.xml"/>
+  
+ </session-factory>
+</hibernate-configuration>

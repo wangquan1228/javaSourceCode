@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<!-- 导入aop约束 -->
+	<!-- 1 配置目标对象 -->
+	<bean name="userService"
+		class="com.wq.service.impl.UserServiceImpl"></bean>
+	<!-- 2 配置通知对象 -->
+	<bean name="myAdvice" class="com.wq.aspect.Myadvice"></bean>
+	<!-- 3 开启使用注解织入 -->
+	<!-- public void com.wq.service.impl.UserServiceImpl.save() 指定通知使用 返回参数类型+方法的完整路径 
+		进化1: * com.wq.service.impl.UserServiceImpl.save() *指定所有的返回类型(相当于通配符) 进化2 
+		* com.wq.service.impl.UserServiceImpl.*() 第二个*可以指定所有的方法 进化3 * com.wq.service.impl.UserServiceImpl.*(..) 
+		..配置所有参数 进化4 * com.wq.service.impl.*ServiceImpl.*(..) impl后的* 配置impl包后的所有的xxxServiceImpl 
+		进化4 * com.wq.service.impl..*ServiceImpl.*(..) 两个..指impl下所有的包括子包中的xxxServiceImpl -->
+	<aop:config>
+		<aop:pointcut
+			expression="execution( * com.wq.service.impl.*ServiceImpl.*(..))"
+			id="pc" />
+		<aop:aspect ref="myAdvice">
+		<!-- 前置通知 -->
+			<aop:before method="before" pointcut-ref="pc" />
+			<!-- 后置通知 -->
+			<aop:after-returning method="afterReturning"
+				pointcut-ref="pc" />
+				<!-- 环绕通知 -->
+			<aop:around method="around" pointcut-ref="pc" />
+			<!-- 异常通知 -->
+			<aop:after-throwing method="afterExcepiton"
+				pointcut-ref="pc" />
+				<!-- 后置通知 -->
+			<aop:after method="after" pointcut-ref="pc" />
+
+		</aop:aspect>
+	</aop:config>
+</beans>

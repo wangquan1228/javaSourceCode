@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wq.mapper.UserMapper">
+	<!-- 单个查询 -->
+
+	<select id="getUserById" parameterType="int" resultType="user">
+		select *
+		from user where id = #{id}
+	</select>
+
+	<!-- 多个查询 -->
+	<select id="getUserList" resultType="user">
+		select * from user;
+	</select>
+
+	<!-- 插入 -->
+	<insert id="addUser" parameterType="user">
+		insert into
+		user(name,password,age,create_time)
+		values(#{name},#{password},#{age},#{createTime})
+	</insert>
+
+	<!-- 删除 -->
+	<delete id="deleteUser" parameterType="int">
+		delete from user where
+		id=#{id}
+	</delete>
+
+	<!-- 修改用户 -->
+	<update id="updateUser" parameterType="user">
+		update user set
+		name=#{name},age=#{age},create_time=#{createTime} where
+		id=#{id}
+	</update>
+
+	<!-- 根据用户名和密码登录 -->
+	<select id="getUserByNameAndPwd" resultType="user">
+		select * from user
+		where name=#{0} and password=#{1}
+	</select>
+
+	<!-- like 的模糊查询 -->
+	<select id="getUserByUserDto" parameterType="com.wq.dto.UserDto"
+		resultType="user">
+		select * from user
+		where name like '%${user.name}'
+	</select>
+	<!-- 统计用户数量 -->
+	<select id="getUserCount" resultType="int">
+		<!-- count(值)的值表示数据库表中的字段名,而count()填写数字的效率 高于count(*) -->
+		select count(0) from user;
+	</select>
+
+	<!-- 返回HashMap -->
+	<select id="getUserListMap" resultType="hashMap">
+		select * from user;
+	</select>
+
+	<!-- 返回resultMap -->
+	<!-- 定义一个resultMap -->
+	<resultMap type="user" id="userResultMap">
+	<!-- id标签代表数据库的主键。column代表数据库的字段名，property代表java对象的属性名  -->
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+	</resultMap>
+
+	<select id="getUserListByResultMap" resultMap="userResultMap">
+	  select id, name,age from user
+	</select>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd ">
+	<!-- 
+	   bean:描述被spring容器管理的对象
+	   name:给被管理的对象取名,获取对象时根据该属性获取,名字可以重复,也可以是特殊字符
+	  id属性:与name属性一模一样. 名称不可重复 ，不能使用特殊字符.
+	 -->
+	
+	<bean name="user" class="com.wq.bean.User"></bean>
+	 
+	<!--  引入其他的配置文件 -->
+	 <import resource="com/wq/create/applicationContext.xml"/>
+</beans>
+ 

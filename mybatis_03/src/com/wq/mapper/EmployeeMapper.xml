@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wq.mapper.EmployeeMapper">
+	<!-- <select id="getEmpByEmployeeDto"
+		parameterType="com.wq.dto.EmployeeDto" resultType="emp">
+		select * from employee
+		where标签,作用1:添加where关键字, 作用二:判断第一个条件需不需and
+		<where>
+			<if test="employee.empName!=null">
+				and emp_name like'${employee.empName}%'
+			</if>
+			<if test="employee.gender!=null">
+				and gender =#{employee.gender}
+			</if>
+
+			collection:输入参数的属性,open:循环前开始的符号,close:循环后结尾的符号separate:分隔符
+			<if test="ids!=null">
+				<foreach collection="ids" open="and dept_id in(" close=")"
+					item="id" separator=",">
+					#{id}
+				</foreach>
+			</if>
+		</where>
+	</select> -->
+    
+    <!-- sql片段,可以复用 -->
+    <sql id="query_emp_where">
+    <if test="employee.empName!=null">
+                and emp_name like'${employee.empName}%'
+            </if>
+            <if test="employee.gender!=null">
+                and gender =#{employee.gender}
+            </if>
+
+            <!-- collection:输入参数的属性,open:循环前开始的符号,close:循环后结尾的符号separate:分隔符 -->
+            <if test="ids!=null">
+                <foreach collection="ids" open="and dept_id in(" close=")"
+                    item="id" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+    </sql>
+    <select id="getEmpByEmployeeDto"
+        parameterType="com.wq.dto.EmployeeDto" resultType="emp">
+        select * from employee
+        <!-- where标签,作用1:添加where关键字, 作用二:判断第一个条件需不需and -->
+        <where>
+            <!-- include标签和jsp中差不多 -->
+             <include refid="query_emp_where"></include>
+        </where>
+    </select>
+    
+    <!-- 一对多 -->
+    <select id="getEmpdepartment" parameterType="int" resultType="com.wq.bean.Employee">
+     select  d.dept_id ,d.dept_name,e.emp_id,e.emp_name 
+        from department d inner join employee e on d.dept_id=e.dept_id
+        where d.dept_id = #{deptId}
+    </select>
+</mapper>

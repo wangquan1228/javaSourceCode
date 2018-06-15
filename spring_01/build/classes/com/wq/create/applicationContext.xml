@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd ">
+
+	<!-- 空参构造 -->
+	<bean name="user" class="com.wq.bean.User"  ></bean>
+	<!-- 
+		静态工厂创建 
+		 调用UserFactory的createUser方法创建名user2的对象，放入容器
+	-->
+	<bean name="user2" class="com.wq.create.UserFactory"
+		factory-method="createUser">
+	</bean>
+	<!-- 
+		实例工厂创建引入别的bean
+	 -->
+	 <bean name="user3" class="com.wq.create.UserFactory"
+	 	factory-bean="UserFactory"
+	 	factory-method="createUser2"></bean>
+	 <bean name ="UserFactory" class="com.wq.create.UserFactory"></bean>
+	<!-- scope位于bean中
+	        singleton:默认属性,单列对象,被标为单列对象在spring容器中只会有一个实例
+	        prototype:多例原型.被标识为多例的对象,每次再获得才会创建.每次创建都是新的对象
+	        					.整合struts2时,ActionBean必须配置为多例的.
+	        request:web环境下,与request的生命周期一致
+	        session:web环境下,与session的生命周期一致
+					(重点掌握singleton ,prototype,实际开发中多用默认参数)
+	 -->
+	<bean name="user4" class="com.wq.bean.User" scope="singleton"></bean>
+	<!-- 销毁和初始化方法 -->
+	<bean name="user5" class="com.wq.bean.User" init-method="init" destroy-method="destroy"></bean>
+	
+	
+	
+	
+</beans>
+ 

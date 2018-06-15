@@ -1,0 +1,23 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wq.mapper.EmployeeMapper">
+
+	<resultMap type="employee" id="getEmpResultMap">
+		<id property="empId" column="emp_id" />
+		<result property="empName" column="emp_name" />
+		<association property="department" javaType="department"
+			select="com.wq.mapper.DepartmentMapper.getDepartmentByDeptId"
+			column="dept_id"></association>
+	</resultMap>
+	<select id="getEmployeeByEmpId" parameterType="int"
+		resultMap="getEmpResultMap">
+		select * from employee where emp_id=#{empId}
+	</select>
+
+	<!-- 一对多,多的一方 -->
+	<select id="getEmployeeByDeptId" parameterType="int"
+		resultType="employee">
+		select * from employee where dept_id=#{deptId}
+	</select>
+</mapper>

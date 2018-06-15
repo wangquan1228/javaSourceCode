@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 配置数据库连接文件 -->
+	<properties resource="jdbc.properties"></properties>
+	<!-- 是否开启驼峰命名规则 ,默认false -->
+	 <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+	<!-- 别名的设置 -->
+    <typeAliases>
+          <!-- 单个别名的设置 -->
+        <typeAlias type="com.wq.bean.User"  alias="user"/>
+        <!-- 批量设置别名   将包下的实体类变成小写 -->
+        <package name="com.wq.bean"/>
+    </typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<dataSource type="POOLED">
+				<!-- 数据库源,存放连接数据库的四要素 -->
+				<property name="driver" value="${jdbc.driver}" />
+				<property name="url" value="${jdbc.url}" />
+				<property name="username" value="${jdbc.username}" />
+				<property name="password" value="${jdbc.password}" />
+			    <!--   在任意时间可以存在的活动（也就是正在使用）连接数量
+				<property name="poolMaximumActiveConnections " value="10"/>
+				任意时间可能存在的空闲连接数 
+				<property name="poolMaximumIdleConnections" value="3"/> -->
+			</dataSource>
+		</environment>
+	</environments>
+	<!-- sql的映射文件 -->
+	<mappers>
+	   <!-- 方式1:映射方式-->
+		<mapper resource="com/wq/mapper/UserMapper.xml" />
+		<!-- 方式2:使用class -->
+		<!-- <mapper class="com.wq.mapper.UserMapper"/> -->
+		<!-- 方式3:使用package -->
+		<!-- <package name="com.wq.mapper"/> -->
+	</mappers>
+
+
+</configuration>

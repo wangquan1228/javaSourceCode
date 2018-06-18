@@ -163,7 +163,7 @@
 		<property name="baseDictService" ref="baseDictService"></property>
 	</bean>
 	
-	<bean name="linkManAction" class="com.wq.action.LinkManAction">
+	<bean name="linkManAction" class="com.wq.action.LinkManAction" scope="prototype">
 	       <property name="linkManService" ref="linkManService"></property>
 	</bean>
 

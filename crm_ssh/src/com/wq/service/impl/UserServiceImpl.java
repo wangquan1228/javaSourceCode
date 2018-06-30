@@ -36,7 +36,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void saveUser(User user) {
-        // TODO Auto-generated method stub
+        User  user1 = userDao.getUserByCode(user.getUser_code());
+        if(user1!=null) {
+            throw new RuntimeException("该用户名已经被使用,请重新输入");
+        }
         userDao.save(user);
     }
     /*
@@ -53,5 +56,8 @@ public class UserServiceImpl implements UserService {
     public User getById(Serializable id) {
         return userDao.getById(id);
     }
+
+     
+     
 
 }

@@ -125,6 +125,11 @@
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 
+	<bean name="saleVisitDao" class="com.wq.dao.impl.SaleVisitDaoImpl">
+		<!-- 注入sessionFactory -->
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
 	<!--service层 -->
 	<bean name="userService"
 		class="com.wq.service.impl.UserServiceImpl">
@@ -144,8 +149,14 @@
 
 	<bean name="linkManService"
 		class="com.wq.service.impl.LinkManServiceImpl">
-        <property name="linkManDao" ref="linkManDao"></property>
+		<property name="linkManDao" ref="linkManDao"></property>
 	</bean>
+
+	<bean name="saleVisitService"
+		class="com.wq.service.impl.SaleVisitServiceImpl">
+		<property name="saleVisitDao" ref="saleVisitDao"></property>
+	</bean>
+
 	<!-- action层 -->
 	<bean name="userAction" class="com.wq.action.UserAction"
 		scope="prototype">
@@ -162,9 +173,15 @@
 		scope="prototype">
 		<property name="baseDictService" ref="baseDictService"></property>
 	</bean>
-	
-	<bean name="linkManAction" class="com.wq.action.LinkManAction" scope="prototype">
-	       <property name="linkManService" ref="linkManService"></property>
+
+	<bean name="linkManAction" class="com.wq.action.LinkManAction"
+		scope="prototype">
+		<property name="linkManService" ref="linkManService"></property>
+	</bean>
+
+	<bean name="saleVisitAction" class="com.wq.action.SaleVisitAction"
+		scope="prototype">
+		<property name="saleVisitService" ref="saleVisitService"></property>
 	</bean>
 
 </beans>

@@ -13,4 +13,5 @@ public interface UserService {
     void updateUserPwd(User user);
     //根据id查询对象
     User getById(Serializable id);
+  
 }

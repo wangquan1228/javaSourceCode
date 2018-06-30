@@ -70,8 +70,15 @@ public class CustomerServiceImpl implements CustomerService {
         return pb;
     }
 
-    
+    @Override
+    public List<Object[]> getIndustryCount() {
+        return customerDao.getIndustryCount();
+        
+    }
 
-    
+    @Override
+    public List<Object[]> getSourceCount() {
+        return customerDao.getIndustryCount();
+    }
 
 }

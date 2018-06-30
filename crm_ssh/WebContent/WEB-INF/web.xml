@@ -12,7 +12,7 @@
 		<filter-name>openSessionInView</filter-name>
 		<filter-class>org.springframework.orm.hibernate5.support.OpenSessionInViewFilter</filter-class>
 	</filter>
-	 
+
 	<!-- Struts2核心过滤器 -->
 	<filter>
 		<filter-name>struts2</filter-name>
@@ -37,10 +37,16 @@
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:applicationContext.xml</param-value>
 	</context-param>
-
+	<!-- 验证码 -->
+	<servlet>
+		<servlet-name>Kaptcha</servlet-name>
+		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Kaptcha</servlet-name>
+		<url-pattern>/kaptcha.jpg</url-pattern>
+	</servlet-mapping>
 	<welcome-file-list>
-		 
 		<welcome-file>login.jsp</welcome-file>
-		 
 	</welcome-file-list>
 </web-app>

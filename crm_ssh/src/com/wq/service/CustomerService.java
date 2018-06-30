@@ -1,6 +1,7 @@
 package com.wq.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
@@ -17,6 +18,10 @@ public interface CustomerService {
     void updateCust(Customer customer);
 
     Customer getById(Serializable id);
+
+    List<Object[]> getIndustryCount();
+    
+    List<Object[]> getSourceCount();
 
     
 }

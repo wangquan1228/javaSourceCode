@@ -9,6 +9,12 @@ import com.wq.util.PageBean;
 
 public interface CustomerDao extends BaseDao<Customer> {
 
+    public List<Object[]> getIndustryCount();
+    
+    public List<Object[]> getSourceCount();
+
+    
+
     
 
    

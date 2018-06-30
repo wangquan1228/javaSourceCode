@@ -138,4 +138,23 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
         customerService.updateCust(customer);
         return "success";
     }
+    
+    /*
+     * 查询客户行业信息
+     */
+    public String getIndustryCount() {
+       List<Object[]>list= customerService.getIndustryCount();
+       ActionContext.getContext().put("list", list);
+        return "industry";
+    }
+    
+    /**
+     * 查询客户来源
+     * @return
+     */
+    public String getSourceCount() {
+        List<Object[]>list= customerService.getSourceCount();
+        ActionContext.getContext().put("list", list);
+        return "source";
+    }
 }
